@@ -1,0 +1,41 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+.env
+
+# Bytecode and caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Data and results (don't commit large files)
+data/raw/
+data/processed/
+results/
+models/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs and DB
+*.log
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
