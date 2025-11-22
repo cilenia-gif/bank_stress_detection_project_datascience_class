@@ -1,7 +1,9 @@
-# Each non-comment line below is a ticker symbol. The downloader script expects
-# one ticker per line (comments beginning with '#' are ignored).
-#
-# Ticker -> Company (for reference; these comment lines are safe to keep in the CSV)
+# Each non-comment line below is treated as a ticker symbol.
+# One ticker per line. Lines starting with '#' are ignored by the notebook.
+
+# -------------------------------------------------------
+# Major U.S. Banks Included in the Stress Index Analysis
+# -------------------------------------------------------
 # JPM  -> JPMorgan Chase & Co.
 # BAC  -> Bank of America Corporation
 # C    -> Citigroup Inc.
@@ -10,9 +12,14 @@
 # MS   -> Morgan Stanley
 # USB  -> U.S. Bancorp
 # PNC  -> PNC Financial Services Group, Inc.
-# BK   -> The Bank of New York Mellon Corporation (BNY Mellon)
-#
-# Exampls of tickers, it can be still adapted through out the project : 
+# TFC  -> Truist Financial Corporation
+# CMA  -> Comerica Incorporated
+# CFG  -> Citizens Financial Group, Inc.
+
+# Note:
+# This list can be modified at any time.
+# Notebook 01 will always read whatever tickers are provided here.
+
 JPM
 BAC
 C
@@ -21,4 +28,6 @@ GS
 MS
 USB
 PNC
-BK
+TFC
+CMA
+CFG
