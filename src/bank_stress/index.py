@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-src/bank_stress/stress.py
+src/bank_stress/index.py
 
 Compute a simple market-based stress index from bank equity returns.
 
