@@ -60,44 +60,62 @@ def build_ml_dataset(
 
     The function:
       1. Loads the stress index and labels CSVs.
-      2. Chooses the stress metric:
+      2. Ensures both have *timezone-naive* DatetimeIndex indices.
+      3. Chooses the stress metric:
          - 'stress_index_smooth' if available, else 'stress_index'.
-      3. Creates features from:
+      4. Creates features from:
          - 'avg_vol', 'avg_corr' if present, and
          - the chosen stress metric plus its lagged values.
-      4. Aligns with the binary 'stress_label' from the labels file.
-
-    Parameters
-    ----------
-    paths : DatasetPaths
-        Object containing paths to the stress index and labels CSVs.
-
-    lags : int, default 5
-        Number of lagged values of the stress metric to include as features.
-
-    Returns
-    -------
-    features : pd.DataFrame
-        Feature matrix indexed by date.
-
-    labels : pd.Series
-        Binary labels (0/1) indexed by the same dates as `features`.
+      5. Aligns with the binary 'stress_label' from the labels file.
     """
     if lags < 0:
         raise ValueError("lags must be >= 0")
 
+    # ------------------------------------------------------------------
+    # 1) Load CSVs
+    # ------------------------------------------------------------------
     stress_df = pd.read_csv(
         paths.stress_index_path,
         index_col=0,
         parse_dates=True,
-    ).sort_index()
+    )
 
     labels_df = pd.read_csv(
         paths.labels_path,
         index_col=0,
         parse_dates=True,
-    ).sort_index()
+    )
 
+    # ------------------------------------------------------------------
+    # 2) Ensure both indices are timezone-naive DatetimeIndex
+    #    (this fixes the 'tz-naive vs tz-aware' join error)
+    # ------------------------------------------------------------------
+    def _make_naive_datetime_index(df: pd.DataFrame) -> pd.DataFrame:
+        """Return a copy of df with a tz-naive DatetimeIndex."""
+        idx = df.index
+
+        # If not already datetime, try to parse.
+        if not isinstance(idx, pd.DatetimeIndex):
+            idx = pd.to_datetime(idx, errors="coerce")
+
+        # Drop rows where the index could not be parsed.
+        valid_mask = ~idx.isna()
+        df = df.loc[valid_mask].copy()
+        idx = idx[valid_mask]
+
+        # If timezone-aware, drop the timezone information.
+        if idx.tz is not None:
+            idx = idx.tz_convert(None)
+
+        df.index = idx
+        return df.sort_index()
+
+    stress_df = _make_naive_datetime_index(stress_df)
+    labels_df = _make_naive_datetime_index(labels_df)
+
+    # ------------------------------------------------------------------
+    # 3) Basic checks and metric choice
+    # ------------------------------------------------------------------
     if "stress_label" not in labels_df.columns:
         raise KeyError(
             "labels_path must contain a 'stress_label' column; "
@@ -115,14 +133,17 @@ def build_ml_dataset(
             f"{paths.stress_index_path}"
         )
 
-    # Align stress index and labels on overlapping dates.
+    # ------------------------------------------------------------------
+    # 4) Align stress index and labels on overlapping dates
+    # ------------------------------------------------------------------
     combined = stress_df.join(labels_df[["stress_label"]], how="inner")
-
     if combined.empty:
         raise ValueError("No overlapping dates between stress index and labels.")
 
-    # Base feature columns.
-    feature_columns = []
+    # ------------------------------------------------------------------
+    # 5) Build feature matrix
+    # ------------------------------------------------------------------
+    feature_columns: list[str] = []
     for column in ("avg_vol", "avg_corr"):
         if column in combined.columns:
             feature_columns.append(column)
