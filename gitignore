@@ -23,8 +23,13 @@ __pycache__/
 # Data and results (don't commit large files)
 data/raw/
 data/processed/
-results/
-models/
+
+# Ignore ONLY main.py outputs (keep notebook results!)
+results/figures/baseline_combined_labels*_curve.png
+results/figures/baseline_q0.90_(robustness)_*_curve.png
+results/figures/baseline_q0.95_(main)_*_curve.png
+results/models/baseline_logit_main.joblib
+results/metrics/baseline_logit_main_metrics.json
 
 # Packaging / build
 build/
