@@ -1,12 +1,16 @@
 """
 Unit tests for src.bank_stress.data_utils (uses monkeypatch to avoid network).
+
+This test is skipped automatically if yfinance is not installed.
 """
+
+from __future__ import annotations
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
 
-from bank_stress.data_utils import download_prices
+from bank_stress.data_utils import download_prices  # noqa: E402
 
 
 def _fake_yf_download_single(
@@ -22,9 +26,9 @@ def _fake_yf_download_single(
 
     Accepts **kwargs to avoid errors if callers pass extra keyword
     arguments (e.g., progress, auto_adjust). Produces a DataFrame
-    with a MultiIndex column structure: (ticker, "Adj Close").
+    with a MultiIndex column structure: (ticker, 'Adj Close').
     """
-    dates = pd.date_range(start, end, freq="B")
+    dates = pd.date_range(start=start, end=end, freq="B")
 
     col_index = pd.MultiIndex.from_product([[tickers[0]], ["Adj Close"]])
 
@@ -40,7 +44,7 @@ def test_download_prices_single_ticker(monkeypatch):
     """
     Test extraction of 'Adj Close' when yfinance returns MultiIndex columns.
     """
-    # Patch yfinance.download so no real network call happens.
+    # Patch yfinance.download so no real network call happens
     monkeypatch.setattr(yf, "download", _fake_yf_download_single)
 
     df = download_prices(["JPM"], start="2020-01-01", end="2020-01-31")
