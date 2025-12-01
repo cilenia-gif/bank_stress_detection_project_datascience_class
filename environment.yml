@@ -1,0 +1,19 @@
+name: bank-stress-project
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - numpy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - joblib
+  - jupyter
+  - pip
+  - pip:
+      - black
+      - flake8
+      - pytest
+      - pytest-cov
+
