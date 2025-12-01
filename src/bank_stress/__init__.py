@@ -1,3 +1,10 @@
 """
-Make src/ a Python package so modules like bank_stress.<module> can be imported.
+Bank Stress Detection package.
+
+Provides:
+- data loading utilities
+- feature engineering
+- the stress index
+- label generation
+- model training & evaluation
 """
