@@ -275,7 +275,7 @@ def plot_roc_and_pr_curves(
     fig_roc, ax_roc = plt.subplots(figsize=(6, 5))
     RocCurveDisplay.from_predictions(
         y_true=y_test_array,
-        y_pred=prob_pos_array,
+        y_score=prob_pos_array,
         ax=ax_roc,
     )
     ax_roc.set_title("ROC Curve")
