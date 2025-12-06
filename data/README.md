@@ -2,7 +2,7 @@
 
 This document explains how the data for this project was obtained, processed, and organized. Due to technical limitations in my development environment (Nuvolos + VS Code), the automated data ingestion pipeline could not access external APIs such as yfinance. As a result, all raw data used in this project was manually downloaded using Google Colab.
 
-The project still includes the original ingestion scripts (`data_utils.py` and `01_data_download_and_etl.ipynb`) to demonstrate how the data download process was intended to work, even though these scripts could not be executed successfully in the Nuvolos environment.
+The project still includes the original ingestion scripts (`data_utils.py` and `01_data_download_and_eda.ipynb`) to demonstrate how the data download process was intended to work, even though these scripts could not be executed successfully in the Nuvolos environment.
 
 ---
 
@@ -28,7 +28,7 @@ The `data/` directory contains two main folders:
 Attempts to download data programmatically within:
 
 - `data_utils.py`
-- `01_data_download_and_etl.ipynb`
+- `01_data_download_and_eda.ipynb`
 
 were unsuccessful because the Nuvolos/VS Code environment was unable to reach the external yfinance API.
 
