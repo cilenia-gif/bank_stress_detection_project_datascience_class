@@ -1,19 +1,16 @@
 python>=3.10
 pandas>=1.5
 numpy>=1.25
-yfinance
-scikit-learn
-xgboost
-lightgbm
-statsmodels
-matplotlib
-seaborn
-networkx
+scikit-learn>=1.4
+matplotlib>=3.5
+seaborn>=0.13
 joblib
-pyyaml
 pytest
 black
 flake8
+yfinance
+
+# Optional for notebooks 
 jupyterlab
 notebook
-nbformat 
+nbformat
